@@ -18,6 +18,7 @@
 <body>
 <div id="app"></div>
 <script src="./prizeDraw/js/prizeDraw.js"></script>
+<!--<script src="./prizeDraw/lib/prizeDraw.js"></script>不支持es6的浏览器导入转为es5的js文件-->
 <script>
     var data = [
         './img/yideng.jpg',   //一等奖概率0.5%
