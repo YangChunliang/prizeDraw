@@ -1,0 +1,24 @@
+{
+  "name": "prizedraw",
+  "version": "1.0.0",
+  "description": "原生JS写的九宫格抽奖组件",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel js -d lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YangChunliang/prizeDraw.git"
+  },
+  "author": "'springmoon' <'1711626079@qq.com'> (http://www.springmoon.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/YangChunliang/prizeDraw/issues"
+  },
+  "homepage": "https://github.com/YangChunliang/prizeDraw#readme",
+  "devDependencies": {
+    "babel-cli": "6.24.1",
+    "babel-preset-es2015": "6.24.1"
+  }
+}
