@@ -3,6 +3,18 @@
 ### 支持度
 #### es6语法的不支持ie浏览器环境
 #### es5语法的基本支持所有主流浏览器
+### 方法说明
+```
+constructor(config)  //构造函数，初始化数据
+init()               //组件初始化，执行drawBox与listenMove
+drawBox()            //画出组件视图
+listenMove()         //监听组件点击事件
+startmove()          //使组件开始运动
+move()               //组件运动的具体实现
+setSpeed()           //设置速度
+endMove()            //使组件结束运动
+getRandom()          //按照对应的概率返回指定位置
+```
 ### 使用方法
 #### 导入prizedraw.css与prizeDraw.js文件
 #### 在自定义script标签中创建对象并传入数据
