@@ -17,6 +17,9 @@
     opacity: .8;
     cursor: pointer;
 }
-/*#app img:nth-child(1){*/
-    /*opacity: .8;*/
-/*}*/
+.bright{
+  opacity: 0.8;
+}
+.dark{
+  opacity: 1;
+}
