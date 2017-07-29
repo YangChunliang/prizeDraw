@@ -45,9 +45,8 @@ class PrizeDraw{
         this.speed = 640;
         let num = this.getRandom();
         this.moveCount = num+32-this.prizeIndex;
-        this.timer = setTimeout(()=>{
-            this.move();
-        }, this.speed);
+        this.move();
+        this.emit('start', '开始转动了'); //触发开始状态
     }
     //运动具体实现
     move() {
@@ -85,7 +84,28 @@ class PrizeDraw{
     //结束运动
     endMove() {
         clearInterval(this.timer);
+        this.emit('end', '结束转动了'); //触发开始状态
         this.flag = true;//鼠标点击激活
+    }
+    //定义事件监听
+    on(eventName, callback) {
+          //我的代码
+          if(!this.handles){
+               this.handles={};
+          }
+          if(!this.handles[eventName]){
+               this.handles[eventName]=[];
+          }
+       this.handles[eventName].push(callback);
+    }
+    // 触发事件 eventName
+    emit(eventName) {
+        //你的代码
+       if(this.handles[arguments[0]]){
+           for(var i=0;i<this.handles[arguments[0]].length;i++){
+               this.handles[arguments[0]][i](arguments[1]);
+           }
+       }
     }
     //按照概率来获取随机数
     getRandom() {
