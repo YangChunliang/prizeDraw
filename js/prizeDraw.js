@@ -1,8 +1,12 @@
-document.write('<script src="./prizeDraw/js/Observer.js"><\/script>');
+document.write('<script src="./js/Observer.js"><\/script>');
+
 class PrizeDraw {
     constructor(config) {
         this.el = config.el;
         this.img_url = config.url;
+        this.pLeft = config.posi.left;
+        this.pTop = config.posi.top;
+        this.pColor = config.bgColor.pColor;
         this.prizeIndex = 0;//当前中奖位置
         this.moveCount;//应该转动的步数
         this.myIndex = 0;//已经转动的步数
@@ -11,7 +15,6 @@ class PrizeDraw {
         this.flag = true;//点击事件激活
         this.arrNum = [0, 1, 2, 5, 8, 7, 6, 3];//定义转动的顺序
         this.arrPic = document.getElementsByName('pic');
-        this.init();
     }
 
     //初始化
@@ -22,16 +25,19 @@ class PrizeDraw {
 
     //绘制界面
     drawBox() {
-        let div = document.createElement("div");
-        div.setAttribute("class", "box");
+        let pDiv = document.createElement("div");
+        pDiv.setAttribute("class", "box");
+        pDiv.style.left = this.pLeft + 'px';
+        pDiv.style.top = this.pTop + 'px';
+        pDiv.style.backgroundColor = this.pColor;
         for (let i = 0; i < 9; i++) {
             let img = document.createElement("img");
             img.setAttribute("name", "pic");
             img.setAttribute("src", this.img_url[i]);
-            div.appendChild(img);
+            pDiv.appendChild(img);
         }
         let target = document.getElementById(this.el);
-        target.appendChild(div);
+        target.appendChild(pDiv);
     }
 
     //挂起监听事件
@@ -51,7 +57,7 @@ class PrizeDraw {
         let num = PrizeDraw.getRand();
         this.moveCount = num + 32 - this.prizeIndex;
         this.move();
-        Observer.fire('start', '开始转动了'); //触发开始状态
+        Observer.fire('start', {}); //触发开始状态
     }
 
     //运动具体实现
@@ -92,14 +98,15 @@ class PrizeDraw {
     //结束运动
     endMove() {
         clearInterval(this.timer);
-        Observer.fire('end', '结束转动了'); //触发开始状态
+        Observer.fire('end', {
+            currentPosition: this.arrNum[this.prizeIndex - 1] + 1
+        }); //触发开始状态
         this.flag = true;//鼠标点击激活
     }
 
     //按照概率来获取随机数
     static getRand() {
         let ran = Math.ceil(Math.random() * 1000);
-        console.log("ran: " + ran);
         let num;//定义中奖的位置(顺时针旋转位置)
         let arr = [1, 3, 4, 6, 7];
         if (ran <= 5) {//一等奖在“0”位置

@@ -1,52 +1,59 @@
-# prizeDraw
-使用原生JS编写的九宫格抽奖组件
+### 简介
+#### 使用原生JS实现的九宫格抽奖组件。可以自定义组件的背景以及位置，可以实现对组件开始运动、结束运动的控制，可以监听组件运动的开始及结束状态
 ### 支持度
-#### es6语法的不支持ie浏览器环境
-#### es5语法的基本支持所有主流浏览器
-### 方法说明
+#### ES6语法下不支持ie浏览器环境，ES5下支持所有浏览器
+### 接口说明
 ```
 constructor(config)  //构造函数，初始化数据
-init()               //组件初始化，执行drawBox与listenMove
-drawBox()            //画出组件视图
-listenMove()         //监听组件点击事件
-startmove()          //使组件开始运动
-move()               //组件运动的具体实现
+init()               //初始化，执行drawBox与listenMove
+drawBox()            //画出视图
+listenMove()         //监听点击事件
+startmove()          //开始运动
+move()               //运动的具体实现
 setSpeed()           //设置速度
-endMove()            //使组件结束运动
+endMove()            //结束运动
 getRandom()          //按照对应的概率返回指定位置
+Observer.regist('start', function () {       //监听运动开始
+    ...
+});
+Observer.regist('end', function (result) {   //监听运动结束，result.currentPosition返回运动结束的位置
+    ...
+});
 ```
 ### 使用方法
 #### 导入prizedraw.css与prizeDraw.js文件
-#### 在自定义script标签中创建对象并传入数据
-#### 数据格式
-##### el 指定渲染标签的ID名 类型：字符串
-##### img_url 传入九张图片的地址 类型：数组 每个位置所传入的奖品及概率见测试代码
-#### 测试代码
-```
-<head>
-     <meta charset="UTF-8">
-     <title>抽奖页面</title>
-     <link rel="stylesheet" href="./prizeDraw/css/prizedraw.css">
-</head>
-```
+#### 在自定义script标签中创建对象并传入数据，然后调用init()方法即可
+
+### 数据格式
+#### 见测试代码
+### 测试代码
 ```angular2html
-<body>
-<div id="app"></div>
-<script src="./prizeDraw/js/prizeDraw.js"></script>
-<!--<script src="./prizeDraw/lib/prizeDraw.js"></script>不支持es6的浏览器导入转为es5的js文件-->
 <script>
-    var data = [
-        './img/yideng.jpg',   //一等奖概率0.5%
-        './img/111.jpg',      //其他小奖概率19.2%
-        './img/erdeng.jpg',   //二等奖概率1%
-        './img/111.jpg',      //其他小奖概率19.2%
-        './img/prize.jpg',
-        './img/111.jpg',      //其他小奖概率19.2%
-        './img/111.jpg',      //其他小奖概率19.2%
-        './img/sandeng.jpg',  //三等奖概率2.5%
-        './img/111.jpg'       //其他小奖概率19.2%
-    ];
-    new PrizeDraw('app', data);
+    var config = {
+        el: 'app',
+        url: [
+            './img/yideng.jpg',   //一等奖概率0.5%
+            './img/111.jpg',      //其他小奖概率19.2%
+            './img/erdeng.jpg',   //二等奖概率1%
+            './img/111.jpg',      //其他小奖概率19.2%
+            './img/prize.jpg',
+            './img/111.jpg',      //其他小奖概率19.2%
+            './img/111.jpg',      //其他小奖概率19.2%
+            './img/sandeng.jpg',  //三等奖概率2.5%
+            './img/111.jpg'       //其他小奖概率19.2%
+        ],
+        posi: {                   //相对于插入元素左边及上边的距离，单位"px"
+            left: 50,
+            top: 50
+        },
+        bgColor: {
+            pColor: '#3a64cc'     //背景颜色
+        }
+    };
+    var prizeDraw = new PrizeDraw(config);       //创建对象并传入参数
+    prizeDraw.init();                            //执行初始化
+    Observer.regist('end', function (result) {   //监听运动结束，result.currentPosition返回运动结束的位置
+        console.log(result.currentPosition);
+    });
 </script>
-</body>
 ```

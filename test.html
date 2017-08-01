@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>抽奖页面</title>
+    <link rel="stylesheet" href="./css/prizedraw.css">
+</head>
+<body>
+<div id="app"></div>
+<script src="./js/prizeDraw.js"></script>
+<script>
+    var config = {
+        el: 'app',
+        url: [
+            './img/yideng.jpg',   //一等奖概率0.5%
+            './img/111.jpg',      //其他小奖概率19.2%
+            './img/erdeng.jpg',   //二等奖概率1%
+            './img/111.jpg',      //其他小奖概率19.2%
+            './img/prize.jpg',
+            './img/111.jpg',      //其他小奖概率19.2%
+            './img/111.jpg',      //其他小奖概率19.2%
+            './img/sandeng.jpg',  //三等奖概率2.5%
+            './img/111.jpg'       //其他小奖概率19.2%
+        ],
+        posi: {                   //相对于插入元素左边及上边的距离，单位"px"
+            left: 50,
+            top: 50
+        },
+        bgColor: {
+            pColor: '#3a64cc'     //背景颜色
+        }
+    };
+    var prizeDraw = new PrizeDraw(config);       //创建对象并传入参数
+    prizeDraw.init();                            //执行初始化
+    Observer.regist('end', function (result) {   //监听运动结束，result.currentPosition返回运动结束的位置
+        console.log(result.currentPosition);
+    });
+</script>
+</body>
+</html>
