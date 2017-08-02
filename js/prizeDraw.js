@@ -1,5 +1,3 @@
-document.write('<script src="./js/Observer.js"><\/script>');
-
 class PrizeDraw {
     constructor(config) {
         this.el = config.el;
@@ -7,6 +5,7 @@ class PrizeDraw {
         this.pLeft = config.posi.left;
         this.pTop = config.posi.top;
         this.pColor = config.bgColor.pColor;
+        this.__message = {};//消息容器
         this.prizeIndex = 0;//当前中奖位置
         this.moveCount;//应该转动的步数
         this.myIndex = 0;//已经转动的步数
@@ -49,15 +48,31 @@ class PrizeDraw {
         });
     }
 
+    //注册信息接口
+    regist(eventName, callback) {
+        if (!this.__message[eventName]) {
+            this.__message[eventName] = [];
+        }
+        this.__message[eventName].push(callback);
+    }
+
+    //发布信息接口
+    fire(eventName, args) {
+        if (this.__message[eventName]) {
+            for (var i = 0; i < this.__message[eventName].length; i++) {
+                this.__message[eventName][i](args);
+            }
+        }
+    }
+
     //执行运动
-    startmove() {
+    startmove(num = PrizeDraw.getRand()) {
         this.flag = false;//点击事件冻结
         this.myIndex = 0;
         this.speed = 640;
-        let num = PrizeDraw.getRand();
         this.moveCount = num + 32 - this.prizeIndex;
         this.move();
-        Observer.fire('start', {}); //触发开始状态
+        this.fire('start', {}); //触发开始状态
     }
 
     //运动具体实现
@@ -98,8 +113,8 @@ class PrizeDraw {
     //结束运动
     endMove() {
         clearInterval(this.timer);
-        Observer.fire('end', {
-            currentPosition: this.arrNum[this.prizeIndex - 1] + 1
+        this.fire('end', {
+            currentPosition: this.prizeIndex-1
         }); //触发开始状态
         this.flag = true;//鼠标点击激活
     }

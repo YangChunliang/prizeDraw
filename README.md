@@ -8,22 +8,19 @@ constructor(config)  //构造函数，初始化数据
 init()               //初始化，执行drawBox与listenMove
 drawBox()            //画出视图
 listenMove()         //监听点击事件
-startmove()          //开始运动
-move()               //运动的具体实现
-setSpeed()           //设置速度
+startmove(num)       //开始运动，num为运动停止的位置
 endMove()            //结束运动
 getRandom()          //按照对应的概率返回指定位置
-Observer.regist('start', function () {       //监听运动开始
+regist('start', function () {      //监听运动开始
     ...
 });
-Observer.regist('end', function (result) {   //监听运动结束，result.currentPosition返回运动结束的位置
+regist('end', function (result) {  //监听运动结束，result.currentPosition返回运动结束的位置
     ...
 });
 ```
 ### 使用方法
 #### 导入prizedraw.css与prizeDraw.js文件
 #### 在自定义script标签中创建对象并传入数据，然后调用init()方法即可
-
 ### 数据格式
 #### 见测试代码
 ### 测试代码
@@ -52,7 +49,7 @@ Observer.regist('end', function (result) {   //监听运动结束，result.curre
     };
     var prizeDraw = new PrizeDraw(config);       //创建对象并传入参数
     prizeDraw.init();                            //执行初始化
-    Observer.regist('end', function (result) {   //监听运动结束，result.currentPosition返回运动结束的位置
+    prizeDraw.regist('end', function (result) {   //监听运动结束，result.currentPosition返回运动结束的位置
         console.log(result.currentPosition);
     });
 </script>
