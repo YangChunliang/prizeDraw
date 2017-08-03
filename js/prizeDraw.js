@@ -7,13 +7,16 @@ class PrizeDraw {
         this.pColor = config.bgColor.pColor;
         this.__message = {};//消息容器
         this.prizeIndex = 0;//当前中奖位置
-        this.moveCount;//应该转动的步数
+        this.moveCount = 100;//应该转动的步数
         this.myIndex = 0;//已经转动的步数
         this.timer = null;//定时器
         this.speed = 640;//初始化速度
         this.flag = true;//点击事件激活
         this.arrNum = [0, 1, 2, 5, 8, 7, 6, 3];//定义转动的顺序
         this.arrPic = document.getElementsByName('pic');
+        this.myFlag = false;
+        this.myFlag2 = true;
+        this.init();
     }
 
     //初始化
@@ -44,6 +47,13 @@ class PrizeDraw {
         this.arrPic[4].addEventListener("click", () => {
             if (this.flag) {
                 this.startmove();
+                setTimeout(() => {
+                    if (!this.myFlag) {
+                        alert("请求超时！");
+                        this.endMove();
+                        this.myFlag2 = false;
+                    }
+                }, 5000);
             }
         });
     }
@@ -65,12 +75,28 @@ class PrizeDraw {
         }
     }
 
+    myMove(num){
+        if (!this.myFlag2) {
+            return;
+        }
+        console.log("接收数据num: " + num);
+        this.myFlag = true;
+        if (num>7 || num<0) {
+          alert("请输入0到7之间的数！");
+          this.endMove();
+          return;
+        }
+        clearInterval(this.timer);
+        this.moveCount = num + 32 - this.prizeIndex;
+        this.myIndex = 0;
+        this.move();
+    }
+
     //执行运动
-    startmove(num = PrizeDraw.getRand()) {
+    startmove() {
         this.flag = false;//点击事件冻结
         this.myIndex = 0;
         this.speed = 640;
-        this.moveCount = num + 32 - this.prizeIndex;
         this.move();
         this.fire('start', {}); //触发开始状态
     }
@@ -79,18 +105,14 @@ class PrizeDraw {
     move() {
         if (this.prizeIndex === 0) {
             this.arrPic[this.arrNum[7]].className = "dark";
-            this.arrPic[this.arrNum[this.prizeIndex]].className = "bright";
-            this.prizeIndex++;
         } else if (this.prizeIndex === 8) {
             this.prizeIndex = 0;
             this.arrPic[this.arrNum[7]].className = "dark";
-            this.arrPic[this.arrNum[this.prizeIndex]].className = "bright";
-            this.prizeIndex++;
         } else {
             this.arrPic[this.arrNum[this.prizeIndex - 1]].className = "dark";
-            this.arrPic[this.arrNum[this.prizeIndex]].className = "bright";
-            this.prizeIndex++;
         }
+        this.arrPic[this.arrNum[this.prizeIndex]].className = "bright";
+        this.prizeIndex++;
         this.myIndex++;
         this.setSpeed();
         this.timer = setTimeout(() => {
@@ -103,10 +125,12 @@ class PrizeDraw {
 
     //设置速度
     setSpeed() {
-        if (this.myIndex < 8) {
-            this.speed -= 80;
-        } else if (this.moveCount - this.myIndex < 8) {
+        if (this.moveCount - this.myIndex < 8) {
             this.speed += 80;
+        }else {
+            if (this.speed > 80) {
+                this.speed -= 80;
+            }
         }
     }
 

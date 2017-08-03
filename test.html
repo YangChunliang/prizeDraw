@@ -31,7 +31,11 @@
         }
     };
     var prizeDraw = new PrizeDraw(config);       //创建对象并传入参数
-    prizeDraw.init();
+    prizeDraw.regist('start', function () {
+        setTimeout(function() {
+            prizeDraw.myMove(PrizeDraw.getRand());
+        }, 3000);
+    });
     prizeDraw.regist('end', function (result) {   //监听运动结束，result.currentPosition返回运动结束的位置
         console.log(result.currentPosition);
     });
