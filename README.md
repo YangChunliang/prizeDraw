@@ -13,7 +13,8 @@ constructor(config)  //构造函数，初始化数据
 init()               //初始化，执行drawBox与listenMove
 drawBox()            //画出视图
 listenMove()         //监听点击事件
-startmove(num)       //开始运动，num为运动停止的位置
+myMove(num)          //使组件停到num位置
+startmove(num)       //开始运动
 endMove()            //结束运动
 getRandom()          //按照对应的概率返回指定位置
 regist('start', function () {      //监听运动开始
@@ -53,7 +54,11 @@ regist('end', function (result) {  //监听运动结束，result.currentPosition
         }
     };
     var prizeDraw = new PrizeDraw(config);       //创建对象并传入参数
-    prizeDraw.init();                            //执行初始化
+    prizeDraw.regist('start', function () {
+        setTimeout(function() {
+            prizeDraw.myMove(PrizeDraw.getRand());//模拟3秒后获取到后端传入的数据
+        }, 3000);
+    });
     prizeDraw.regist('end', function (result) {   //监听运动结束，result.currentPosition返回运动结束的位置
         console.log(result.currentPosition);
     });
